@@ -1,0 +1,19 @@
+#!/bin/bash
+# Switch cpu governor between performance and powersave
+
+if [ $(cpupower frequency-info | grep "governor \"" | cut -f2 -d'"') == "powersave" ]
+then
+	setting="performance"
+	text="Setting Performance"
+elif [ $(cpupower frequency-info | grep "governor \"" | cut -f2 -d'"') == "performance" ]
+then
+	setting="powersave"
+	text="Setting powersave"
+fi
+
+echo "$setting"
+sudo cpupower frequency-set -g "$setting"
+kdialog --title "Governor changed" --passivepopup "$text" 2
+
+## for lxqt
+# notify-send --app-name="Governor changed" "$text" --icon=dialog-information
